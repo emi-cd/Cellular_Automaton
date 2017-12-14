@@ -77,7 +77,7 @@ int born_condition_less = 2;
 int rest_time = 3;
 // ----------------------------------
 ```
-最終的にほとんど動かなくなる。割と規則的に広がる。
+最終的にほとんど動かなくなる。割と規則的に広がる。  
 [![適当条件その2の動画](http://img.youtube.com/vi/aJBszbEL9pQ/0.jpg)](https://youtu.be/aJBszbEL9pQ)
 
 
