@@ -46,10 +46,11 @@ int rest_time = 1;
 - グライダー   
 [![グライダーの動画](http://img.youtube.com/vi/gzTwzM-NQEg/0.jpg)](https://youtu.be/gzTwzM-NQEg)
 
-- 銀河
+- 銀河  
 [![銀河の動画](http://img.youtube.com/vi/aDRhhhQwBis/0.jpg)](https://youtu.be/aDRhhhQwBis)
 
 などなど
+
 
 ### 適当に条件を作ってみる　その1
 ```java
