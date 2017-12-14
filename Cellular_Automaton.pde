@@ -15,7 +15,8 @@ int LIVE_COLOR = 0;
 // You can change this value!-------
 int live_condition_more = 2;
 int live_condition_less = 3;
-int born_condition = 3;
+int born_condition_more = 3;
+int born_condition_less = 3;
 int rest_time = 1;
 // ----------------------------------
 boolean flag = false;
@@ -32,7 +33,7 @@ void setup() {
 
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
-      // Initialize each object
+      // Initialize each object.
       grid[i][j] = new Cell(i*cell_size, j*cell_size, cell_size, cell_size);
       grid[i][j].display();
       state[i][j] = STATE.DEAD;
@@ -43,34 +44,39 @@ void setup() {
 
 void draw() {
   background(255);
+  stroke(0);
 
-  // Start button
+  // Operation buttoms----------
+  fill(#faf0e6);
+  rect(600, 0, 100, 600);
+  // Start and Stop button
   fill(255);
   rect(620, 20, 60, 40);
   fill(0);
   textSize(20);
-  text("Start", 628, 48);
-
-  // Stop buttom
+  if(flag)
+    text("Stop", 630, 48);
+  else
+    text("Start", 628, 48);
+    
+  // next step
   fill(255);
   rect(620, 90, 60, 40);
   fill(0);
-  textSize(20);
-  text("Stop", 628, 118);
+  textSize(15);
+  text("1 Step", 628, 116);
 
-  // next Step
+  // clear buttom
   fill(255);
   rect(620, 160, 60, 40);
   fill(0);
-  textSize(15);
-  text("1 Step", 628, 188);
-  // Clear buttom
-
-  // The counter variables i and j are also the column and row numbers and 
-  // are used as arguments to the constructor for each object in the grid.
+  textSize(20);
+  text("Clear", 625, 188);
+  //--------------------------
+  
+  // move cells
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
-      // Oscillate and display each object
       if (flag)
         grid[i][j].goto_next_state();
       grid[i][j].display();
@@ -79,8 +85,10 @@ void draw() {
 
   mouseOver();
   swap_state();
+  
   if (flag)
-    delay(500);
+    delay(300);
+ 
 }
 
 void swap_state() {
@@ -99,16 +107,12 @@ void mousePressed() {
     int j = mouseY / cell_size;
     grid[i][j].swap_state();
   }
-  // Start buttom
+  // Start and Stop buttom
   else if (620 <= mouseX && mouseX <= 680 && 20 <= mouseY && mouseY <= 60) {
-    flag = true;
-  }
-  // Stop buttom
-  else if (620 <= mouseX && mouseX <= 680 && 90 <= mouseY && mouseY <= 130) {
-    flag = false;
+      flag = !flag;
   }
   // Next Step
-  else if (620 <= mouseX && mouseX <= 680 && 160 <= mouseY && mouseY <= 200) {
+  else if (620 <= mouseX && mouseX <= 680 && 90 <= mouseY && mouseY <= 130) {
     for (int i = 0; i < cols; i++) {
       for (int j = 0; j < rows; j++) {
         // Oscillate and display each object
@@ -118,25 +122,42 @@ void mousePressed() {
     }
   }
   // Clear buttom
+  else if (620 <= mouseX && mouseX <= 680 && 160 <= mouseY && mouseY <= 200) {
+    flag = false;
+    for (int i = 0; i < cols; i++) {
+      for (int j = 0; j < rows; j++) {
+        // Initialize each object.
+        grid[i][j].go_dead();
+      }
+    }
+  }
+
 }
 
 void mouseOver() {
+  fill(230);
   if (mouseX < cell_size*rows && mouseY < cell_size*cols) {
     int i = mouseX / cell_size;
     int j = mouseY / cell_size;
     grid[i][j].mouseOver();
   } else if (620 <= mouseX && mouseX <= 680 && 20 <= mouseY && mouseY <= 60) {
-    fill(#D7F7E9);
-    rect(620, 20, 60, 40);
-    fill(0);
-    textSize(20);
-    text("Start", 628, 48);
+     rect(620, 20, 60, 40);
+     fill(0);
+     textSize(20);
+     if(flag)
+      text("Stop", 630, 48);
+     else
+      text("Start", 628, 48);
   } else if (620 <= mouseX && mouseX <= 680 && 90 <= mouseY && mouseY <= 130) {
-    fill(#D7F7E9);
-    rect(620, 90, 60, 40);
+     rect(620, 90, 60, 40);
+     fill(0);
+     textSize(15);
+     text("1 Step", 628, 116);
+  } else if (620 <= mouseX && mouseX <= 680 && 160 <= mouseY && mouseY <= 200) {
+    rect(620, 160, 60, 40);
     fill(0);
     textSize(20);
-    text("Stop", 628, 118);
+    text("Clear", 625, 188);
   }
 }
 
@@ -178,10 +199,9 @@ class Cell {
 
   void goto_next_state() {
     int num = count_live_surrounding_cell(i, j);
-    System.out.println("i:"+i+",j:" + j + ",num:" + num);
 
     if ((_state > 0 && live_condition_more <= num && num <= live_condition_less && state[i][j] != STATE.REST) || 
-        (_state == 0 && num == born_condition) ) {         // next live.
+        (_state == 0 && born_condition_more <= num && num <= born_condition_less )) {         // next live.
         _state = rest_time;
         next_state[i][j] = STATE.LIVE;
       }else if(_state > 0){                               // next rest.
@@ -203,7 +223,7 @@ class Cell {
   }
 
   void display() {
-    stroke(0);
+    stroke(200);
     fill(_color);
     rect(x, y, w, h);
   }
