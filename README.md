@@ -43,7 +43,8 @@ int born_condition_less = 3;
 int rest_time = 1;
 ```
 試してみる。
-- グライダー   
+- グライダー  
+動画の最初は 1 Step ボタンを使用し 1 Stepごとに進めているが、途中からStartボタンを押した。  
 [![グライダーの動画](http://img.youtube.com/vi/gzTwzM-NQEg/0.jpg)](https://youtu.be/gzTwzM-NQEg)
 
 - 銀河  
